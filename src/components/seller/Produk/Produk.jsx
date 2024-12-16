@@ -20,7 +20,7 @@ const ProductPage = () => {
         setLoading(false);
       } catch (err) {
         console.error("Error fetching products:", err);
-        setError("Failed to load products");
+        setError("Belum ada produk");
         setLoading(false);
       }
     };

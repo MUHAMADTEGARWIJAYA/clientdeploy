@@ -9,6 +9,8 @@ function AddProductPage() {
     price: "",
     weight: "",
     description: "",
+    phoneNumber: "",
+    document: null, // Tambahkan state untuk dokumen
   });
   const [popupVisible, setPopupVisible] = useState(false); // Popup state
   const navigate = useNavigate(); // Initialize navigate function
@@ -18,20 +20,23 @@ function AddProductPage() {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleImageChange = (e) => {
-    setFormData((prevData) => ({ ...prevData, productImage: e.target.files[0] }));
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Membuat FormData untuk mengirim file gambar
+    // Membuat FormData untuk mengirim file gambar dan dokumen
     const form = new FormData();
     form.append("name", formData.productName);
     form.append("description", formData.description);
     form.append("price", formData.price);
     form.append("weight", formData.weight);
     form.append("imageUrl", formData.productImage);
+    form.append("phoneNumber", formData.phoneNumber);
+    form.append("document", formData.document);
 
     try {
       const response = await axios.post("http://localhost:5000/api/products/products", form, {
@@ -80,7 +85,7 @@ function AddProductPage() {
             <input
               type="file"
               name="productImage"
-              onChange={handleImageChange}
+              onChange={handleFileChange}
               className="w-full border border-gray-300 rounded-md p-2"
               accept="image/*"
             />
@@ -93,6 +98,18 @@ function AddProductPage() {
               value={formData.price}
               onChange={handleChange}
               placeholder="Masukkan harga produk"
+              className="w-full border border-gray-300 rounded-md p-3"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-gray-600 font-medium mb-2">Phone Number</label>
+            <input
+              type="number"
+              name="phoneNumber"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+              placeholder="Masukkan nomor Wa"
               className="w-full border border-gray-300 rounded-md p-3"
               required
             />
@@ -119,6 +136,16 @@ function AddProductPage() {
               className="w-full border border-gray-300 rounded-md p-3"
               rows="4"
               required
+            />
+          </div>
+          <div>
+            <label className="block text-gray-600 font-medium mb-2">Dokumen Kesehatan Produk</label>
+            <input
+              type="file"
+              name="document"
+              onChange={handleFileChange}
+              className="w-full border border-gray-300 rounded-md p-2"
+              accept=".pdf,.doc,.docx"
             />
           </div>
           <button

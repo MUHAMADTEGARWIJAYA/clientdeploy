@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 
 const products = [
   { name: "Kambing", image: "8.jpg" },
-  { name: "Daging Kambing", image: "2.jpg" },
-  { name: "Gulai Kambing", image: "5.jpg" },
-  { name: "Tongseng Kambing", image: "6.jpg" },
-  { name: "Sate Kambing", image: "7.jpg" },
-  { name: "Susu Kambing", image: "4.jpg" },
+  { name: "Daging Kambing", image: "daging-kambing.jpg" },
+  { name: "Gulai Kambing", image: "resep-gulai-kambing-sederhana.jpg" },
+  { name: "Tongseng Kambing", image: "Resep-Tongseng-kambing.jpg" },
+  { name: "Sate Kambing", image: "OIP (1).jpg" },
+  { name: "Susu Kambing", image: "OIP.jpg" },
 ];
 
 const FeaturedProducts = () => {

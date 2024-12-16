@@ -8,7 +8,8 @@ function ProductPage() {
   const [quantity, setQuantity] = useState(1);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [cartItems, setCartItems] = useState([]);
- 
+  const [phoneNumber, setPhoneNumber] = useState('');  // Menyimpan nomor telepon
+
   const [imageUrl, setImageUrl] = useState('');
 
   useEffect(() => {
@@ -43,6 +44,7 @@ function ProductPage() {
           headers: { Authorization: `Bearer ${token}` },
         });
         setProduct(response.data);
+        setPhoneNumber(response.data.phoneNumber);
       } catch (error) {
         console.error("Gagal mengambil detail produk:", error.response?.data || error.message);
       }
@@ -106,7 +108,7 @@ function ProductPage() {
     }
   };
   
-
+  
   // useEffect(() => {
   //   const fetchCartItems = async () => {
   //     try {
@@ -126,6 +128,15 @@ function ProductPage() {
   //   fetchCartItems();
   // }, []);
   
+
+  const handleChatNow = () => {
+    if (phoneNumber) {
+      window.location.href = `https://wa.me/${phoneNumber}`;
+    } else {
+      console.error("Nomor telepon tidak ditemukan");
+    }
+  };
+
   if (!product) {
     return <div>Loading...</div>;
   }
@@ -199,9 +210,13 @@ function ProductPage() {
           <img src={imageUrl || '/default-imageUrl.png'} alt="Profile" className="w-10 h-10 rounded-full mb-2" />
           <h3 className="text-black font-semibold">Toko: {product.storeName}</h3>
               <div className="flex gap-2 mt-2">
-                <button className="bg-green-500 text-white px-3 py-1 rounded-lg text-sm">
-                  Chat Sekarang
-                </button>
+                              <button
+                className="bg-green-500 text-white px-3 py-1 rounded-lg text-sm"
+                onClick={handleChatNow}
+              >
+                Chat Sekarang
+              </button>
+
                 <button className="bg-white border border-green-500 text-green-500 px-3 py-1 rounded-lg text-sm">
                   Kunjungi Toko
                 </button>

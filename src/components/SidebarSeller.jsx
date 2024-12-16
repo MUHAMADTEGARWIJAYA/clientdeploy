@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import api from '../utils/api';
 import {
   IoHomeOutline,
-  IoChatbubbleOutline,
+  // IoChatbubbleOutline,
   IoStatsChartOutline,
   IoBookOutline,
   IoHelpCircleOutline,
@@ -56,7 +56,7 @@ const Sidebar = () => {
         <SidebarItem icon={<IoHomeOutline />} label="Home" path="/home" isActive={location.pathname === "/home"} onClick={() => handleItemClick("/home")} />
         <SidebarItem icon={<IoReceiptOutline />} label="Pesanan" path="/semua" isActive={location.pathname === "/semua"} onClick={() => handleItemClick("/semua")} />
         <SidebarItem icon={<IoStatsChartOutline />} label="Statistik" isActive={location.pathname === "/statistik"} onClick={() => handleItemClick("/statistik")} />
-        <SidebarItem icon={<IoChatbubbleOutline />} label="Chat" path="/chat" isActive={location.pathname === "/chat"} onClick={() => handleItemClick("/chat")} />
+        {/* <SidebarItem icon={<IoChatbubbleOutline />} label="Chat" path="/chat" isActive={location.pathname === "/chat"} onClick={() => handleItemClick("/chat")} /> */}
         <SidebarItem icon={<IoCubeOutline />} label="Produk" path="/produk" isActive={location.pathname === "/produk"} onClick={() => handleItemClick("/produk")} />
         <hr className="w-full border-gray-300 my-2" />
         <SidebarItem icon={<IoBookOutline />} label="Edukasi" path="/edukasi" isActive={location.pathname === "/edukasi"} onClick={() => handleItemClick("/edukasi")} />

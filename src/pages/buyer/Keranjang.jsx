@@ -1,158 +1,155 @@
-import { useState, useEffect } from "react";
-import api from "../../utils/api";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
-function CartPage() {
+const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const token = localStorage.getItem('token'); // Ambil token dari localStorage atau Cookie
 
   useEffect(() => {
-    const fetchCartItems = async () => {
+    // Ambil data keranjang dari server
+    const fetchCart = async () => {
       try {
-        const token = localStorage.getItem("token");
-        if (!token) throw new Error("Token tidak ditemukan");
-
-        const response = await api.get("api/cart/getcart", {
-          headers: { Authorization: `Bearer ${token}` },
+        const response = await axios.get('http://localhost:5000/api/cart/getcart', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
         setCartItems(response.data);
-      } catch (error) {
-        console.error("Gagal mengambil data keranjang:", error.response?.data || error.message);
+        console.log(response.data); // Periksa respons API untuk memastikan gambar ada
+      } catch (err) {
+        setError('Gagal mengambil data keranjang');
+        console.error(err);
       }
     };
 
-    fetchCartItems();
-  }, []);
+    fetchCart();
+  }, [token]);
 
-  const calculateTotalPrice = () => {
-    return cartItems.reduce(
-      (total, item) => total + item.product.price * item.quantity,
-      0
-    );
-  };
-
-  const handleUpdateQuantity = async (id, operation) => {
+  // Update jumlah produk
+  const updateCartItem = async (productId, operation) => {
     try {
-      setLoading(true);
-      const token = localStorage.getItem("token");
-      if (!token) throw new Error("Token tidak ditemukan");
-  
-      // Update quantity di backend
-      await api.put(
-        "api/cart/update",
-        { productId: id, operation }, // Kirim operation ("increment" atau "decrement")
-        { headers: { Authorization: `Bearer ${token}` } }
+      await axios.put(
+        'http://localhost:5000/api/cart/update',
+        { productId, operation },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-  
-      // Update di frontend
-      setCartItems((prev) =>
-        prev.map((item) =>
-          item.product.id === id
-            ? {
-                ...item,
-                quantity: operation === "increment" ? item.quantity + 1 : item.quantity - 1,
-                totalPrice:
-                  operation === "increment"
-                    ? (item.quantity + 1) * item.product.price
-                    : (item.quantity - 1) * item.product.price,
-              }
-            : item
-        )
-      );
-    } catch (error) {
-      console.error("Gagal memperbarui jumlah produk:", error.response?.data || error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-  
-  const incrementQuantity = (id) => {
-    handleUpdateQuantity(id, "increment");
-  };
-  
-  const decrementQuantity = (id, currentQuantity) => {
-    if (currentQuantity > 1) {
-      handleUpdateQuantity(id, "decrement");
-    } else {
-      removeItem(id); // Hapus jika kuantitas = 1
-    }
-  };
-  
-
-  const removeItem = async (id) => {
-    try {
-      setLoading(true);
-      const token = localStorage.getItem("token");
-      if (!token) throw new Error("Token tidak ditemukan");
-
-      // Hapus produk di backend
-      await api.delete("api/cart/remove", {
-        data: { productId: id },
-        headers: { Authorization: `Bearer ${token}` },
+      // Update ulang keranjang setelah perubahan
+      const response = await axios.get('http://localhost:5000/api/cart/getcart', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
-
-      // Hapus dari frontend
-      setCartItems((prev) => prev.filter((item) => item.product.id !== id));
-    } catch (error) {
-      console.error("Gagal menghapus produk:", error.response?.data || error.message);
-    } finally {
-      setLoading(false);
+      setCartItems(response.data);
+    } catch (err) {
+      setError('Gagal memperbarui keranjang');
+      console.error(err);
     }
   };
+
+  // Hapus produk dari keranjang
+  const removeFromCart = async (productId) => {
+    try {
+      await axios.delete('http://localhost:5000/api/cart/remove', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: { productId },
+      });
+      // Update ulang keranjang setelah penghapusan
+      const response = await axios.get('http://localhost:5000/api/cart/getcart', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setCartItems(response.data);
+    } catch (err) {
+      setError('Gagal menghapus produk dari keranjang');
+      console.error(err);
+    }
+  };
+
+  const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  const totalPrice = cartItems.reduce((acc, item) => acc + item.totalPrice, 0);
 
   return (
-    <div className="bg-gray-100 p-6 min-h-screen">
-      <h1 className="text-2xl font-bold mb-6">Keranjang</h1>
+    <div className="container mx-auto max-w-screen-2xl bg-gray-100 p-4 min-h-screen">
+      <h2 className="text-2xl font-bold mb-6">Keranjang</h2>
 
-      {cartItems.map((item) => (
-        <div
-          key={item.product.id}
-          className="bg-white p-4 rounded-lg shadow-lg mb-4 flex items-center"
-        >
-          <img
-            src={`http://localhost:5000/${item.product.imageUrl}`}
-            alt={item.product.name}
-            className="w-24 h-24 object-cover rounded-lg mr-4"
-          />
-          <div className="flex-1">
-            <h2 className="font-bold">{item.product.name}</h2>
-            <p>Rp. {item.product.price.toLocaleString()}</p>
-          </div>
-          <div className="flex items-center">
-            <button
-              className="px-4 py-2 bg-gray-200 rounded-l"
-              onClick={() => decrementQuantity(item.product.id, item.quantity)}
-              disabled={loading}
-            >
-              -
-            </button>
-            <span className="px-4">{item.quantity}</span>
-            <button
-              className="px-4 py-2 bg-gray-200 rounded-r"
-              onClick={() => incrementQuantity(item.product.id, item.quantity)}
-              disabled={loading}
-            >
-              +
-            </button>
-          </div>
-          <button
-            className="text-red-500 font-bold ml-4"
-            onClick={() => removeItem(item.product.id)}
-            disabled={loading}
-          >
-            Hapus
+      {error && <p className="text-red-500 mb-4">{error}</p>}
+
+      <div className="grid grid-cols-12  gap-4">
+        <div className="col-span-8 p-6 bg-white rounded-lg shadow-md">
+          {cartItems.length === 0 ? (
+            <p>Keranjang Anda kosong.</p>
+          ) : (
+            cartItems.map((item) => (
+              <div
+                key={item.id}
+                className="flex items-center justify-between bg-white p-4 mb-4 rounded-lg shadow-md"
+              >
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    className="mr-4"
+                  />
+                  <img
+                    src={`http://localhost:5000/${item.imageUrl}`}
+                    alt={item.name}
+                    className="w-20 h-20 object-cover rounded-lg mr-4"
+                  />
+                  <div>
+                    <h3 className="text-lg font-semibold">{item.name}</h3>
+                    <p className="text-gray-500">{`Rp ${item.price.toLocaleString()}`}</p>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <button
+                    onClick={() => updateCartItem(item.productId, 'decrement')}
+                    className="px-3 py-1 bg-gray-200 text-gray-600 rounded-md"
+                  >
+                    -
+                  </button>
+                  <span className="mx-3">{item.quantity}</span>
+                  <button
+                    onClick={() => updateCartItem(item.productId, 'increment')}
+                    className="px-3 py-1 bg-gray-200 text-gray-600 rounded-md"
+                  >
+                    +
+                  </button>
+                  <p className="ml-6">{`Rp ${item.totalPrice.toLocaleString()}`}</p>
+                  <button
+                    onClick={() => removeFromCart(item.productId)}
+                    className="ml-6 text-red-500 font-semibold"
+                  >
+                    Hapus
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+        <div className="col-span-4 bg-white p-6 rounded-lg shadow-md">
+          <h3 className="text-lg font-bold mb-4">Ringkasan Transaksi</h3>
+          <p className="flex justify-between mb-2">
+            <span>Total Produk</span>
+            <span>({totalItems})</span>
+          </p>
+          <p className="flex justify-between font-semibold text-lg mb-6">
+            <span>Total Harga</span>
+            <span>{`Rp ${totalPrice.toLocaleString()}`}</span>
+          </p>
+          <button className="w-full py-2 bg-green-500 text-white rounded-lg font-semibold">
+            Beli
           </button>
         </div>
-      ))}
-
-      {/* Total Harga */}
-      <div className="mt-6 p-4 bg-white shadow-lg rounded-lg">
-        <h2 className="text-xl font-bold">Total Harga</h2>
-        <p className="text-lg font-semibold">
-          Rp. {calculateTotalPrice().toLocaleString()}
-        </p>
       </div>
     </div>
   );
-}
+};
 
-export default CartPage;
+export default Cart;

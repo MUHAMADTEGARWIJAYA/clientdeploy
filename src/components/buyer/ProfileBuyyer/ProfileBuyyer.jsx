@@ -176,7 +176,7 @@ function UserProfile() {
             <label className="w-36 text-gray-700">Tanggal Lahir</label>
             <input type="date" checked={`${birthDate.year}-${birthDate.month}-${birthDate.day}`} onChange={(e) => {
               const [year, month, day] = e.target.value.split("-");
-              setBirthDate({ year, month, day });
+              setBirthDate({ day, month, year });
             }} />
           </div>
 

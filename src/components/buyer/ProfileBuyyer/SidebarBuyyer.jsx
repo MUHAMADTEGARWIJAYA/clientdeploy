@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import {useEffect, useState} from "react"
 import PropTypes from 'prop-types';
 import {
-  IoChatbubbleOutline,
+  
   IoHelpCircleOutline,
   IoLogOutOutline,
   IoMapSharp,
@@ -50,8 +50,7 @@ const Sidebar = () => {
       <nav className="flex flex-col gap-4">
         <SidebarItem icon={<FaRegCircleUser />} label="Akun Saya" path="/profilebuyyer" isActive={location.pathname === "/profilebuyyer"} onClick={() => handleItemClick("/profilebuyyer")} />
         <SidebarItem icon={<IoReceiptOutline />} label="Pesanan Saya" path="/pesananbuyyer" isActive={location.pathname === "/pesananbuyyer"} onClick={() => handleItemClick("/pesananbuyyer")} />
-        <SidebarItem icon={<IoChatbubbleOutline />} label="Chat" path="/chat" isActive={location.pathname === "/chat"} onClick={() => handleItemClick("/chat")} />
-        {/* Tambahkan icon produk di bawah Chat */}
+      
         <SidebarItem icon={<IoMapSharp />} label="Alamat Buyyer" path="/alamatprofile" isActive={location.pathname === "/alamatprofile"} onClick={() => handleItemClick("/alamatprofile")} />
         <SidebarItem icon={<IoCubeOutline />} label="Notifikasi" path="/#" isActive={location.pathname === "/#"} onClick={() => handleItemClick("/#")} />
         {/* Garis pemisah di bawah Produk */}

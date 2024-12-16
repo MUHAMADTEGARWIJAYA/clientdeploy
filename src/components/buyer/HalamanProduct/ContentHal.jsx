@@ -60,10 +60,10 @@ function Content() {
               className="w-full h-40 object-cover rounded-lg mb-4"
             />
             <h3 className="text-lg font-semibold">{product.name}</h3>
-            <p className="text-green-600 font-bold">{product.price}</p>
+            <p className="text-green-600 font-bold">Rp. {product.price}</p>
             <p className="text-gray-500 text-sm">{product.storeName}</p>
             <div className="flex items-center mt-2">
-              <span className="text-yellow-500">⭐</span>
+              <span className="text-yellow-500">⭐⭐⭐⭐⭐</span>
               <span className="ml-1 text-gray-700">{product.rating}</span>
             </div>
           </div>

@@ -13,11 +13,13 @@
     "@fortawesome/fontawesome-free": "^6.6.0",
     "@react-icons/all-files": "^4.1.0",
     "axios": "^1.7.7",
+    "chart.js": "^4.4.7",
     "clsx": "^2.1.1",
     "lucide": "^0.456.0",
     "lucide-react": "^0.456.0",
     "prop-types": "^15.8.1",
     "react": "^18.3.1",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
     "react-icons": "^5.3.0",
     "react-router-dom": "^6.27.0",
@@ -35,7 +37,7 @@
     "eslint-plugin-react-refresh": "^0.4.14",
     "globals": "^15.11.0",
     "postcss": "^8.4.47",
-    "tailwindcss": "^3.4.14",
+    "tailwindcss": "^3.4.16",
     "vite": "^5.4.10"
   }
 }

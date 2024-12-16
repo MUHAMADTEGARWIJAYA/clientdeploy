@@ -71,7 +71,7 @@ const ProductSection = () => {
                                     }} // Gunakan fallback jika gambar tidak ditemukan
                                 />
                                 <h3 className="text-lg font-semibold">{product.name}</h3>
-                                <p className="text-green-600 font-bold">{product.price}</p>
+                                <p className="text-green-600 font-bold">Rp. {product.price}</p>
                                 <p className="text-gray-500 text-sm">{product.storeName}</p>
                             </div>
                         ))

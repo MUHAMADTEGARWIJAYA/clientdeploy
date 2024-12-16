@@ -10,6 +10,7 @@ function EditProductPage() {
     price: "",
     weight: "",
     description: "",
+    phoneNumber: "", // Tambahkan phoneNumber
   });
   const [popupVisible, setPopupVisible] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -41,6 +42,7 @@ function EditProductPage() {
           price: product.price || 0,
           weight: product.weight || 0,
           description: product.description || '',
+          phoneNumber: product.phoneNumber || '', // Ambil phoneNumber jika ada
         });
 
         // Set preview gambar saat ini jika ada
@@ -86,6 +88,7 @@ function EditProductPage() {
     form.append("description", formData.description);
     form.append("price", formData.price);
     form.append("weight", formData.weight);
+    form.append("phoneNumber", formData.phoneNumber); // Tambahkan phoneNumber
     if (formData.productImage) {
       form.append("imageUrl", formData.productImage);
     }
@@ -208,6 +211,18 @@ function EditProductPage() {
               placeholder="Masukkan deskripsi produk"
               className="w-full border border-gray-300 rounded-md p-3"
               rows="4"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-gray-600 font-medium mb-2">Nomor Telepon</label>
+            <input
+              type="text"
+              name="phoneNumber"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+              placeholder="Masukkan nomor telepon"
+              className="w-full border border-gray-300 rounded-md p-3"
               required
             />
           </div>

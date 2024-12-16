@@ -18,7 +18,7 @@ import PerluDikirim from './components/seller/Pesanan/PerluDikirim'
 import Dikirim from './components/seller/Pesanan/Dikirim'
 import Selesai from './components/seller/Pesanan/Selesai'
 import DetailPesanan from './components/seller/Pesanan/DetailPesanan'
-
+import ArtikelLay from './layout/Seller/ArtikelLay'
 import ProdukLayout from './layout/Seller/ProdukLayout';
 import ChatLayout from './layout/Seller/ChatLayout'
 import PengaturanLayout from './layout/Seller/PengaturanLayout'
@@ -38,7 +38,7 @@ import AlamatBuyyerLay from './layout/ProfileBuyyer/AlamatBuyyerLay'
 import PesananBuyyerLay from './layout/ProfileBuyyer/PesananBuyyerLay'
 import PesananBuyyer from './components/buyer/ProfileBuyyer/PesananBuyyer'
 import Editproduk from "./layout/Seller/EditProduk"
-
+import StatistikLay from './layout/Seller/StatistikLay'
 
 function App() {
     return (
@@ -58,6 +58,11 @@ function App() {
                     <Route path="/halamanproduk" element={<div />}/>
                 </Route>
 
+
+                <Route element={<ArtikelLay />}>
+                    <Route path="/artikel" element={<div   />}/>
+                </Route>
+
                 {/* SidebarBuyyerProfile */}
                 <Route element={<ProfileBuyyer />}>
                     <Route path="/profilebuyyer" element={<div />}/>
@@ -73,6 +78,9 @@ function App() {
                     <Route path="/pesananbuyyer" element={<PesananBuyyer />}/>
                 </Route>
 
+                <Route element={<StatistikLay />}>
+                    <Route path="/statistik" element={<div />}/>
+                </Route>
 
 
 
