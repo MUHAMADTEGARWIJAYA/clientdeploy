@@ -1,14 +1,13 @@
-
-import { Bar } from "react-chartjs-2";
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
   BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
   Title,
   Tooltip,
-  Legend,
 } from "chart.js";
+import { Bar } from "react-chartjs-2";
 
 ChartJS.register(
   CategoryScale,
@@ -25,7 +24,7 @@ const StatistikDashboard = () => {
     datasets: [
       {
         label: "Produk Toko",
-        data: [0, 0, 0, 1],
+        data: [0, 0, 0, 4],
         backgroundColor: "#0E7490",
       },
       {
@@ -48,7 +47,7 @@ const StatistikDashboard = () => {
       },
     },
   };
-  
+
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <div className="bg-white shadow-md rounded-lg p-6">
@@ -68,7 +67,7 @@ const StatistikDashboard = () => {
 
           <div className="bg-blue-50 border-l-4 border-blue-700 p-4 rounded-md">
             <h2 className="text-blue-700 font-semibold">Produk</h2>
-            <p className="text-xl font-bold">1</p>
+            <p className="text-xl font-bold">4</p>
             <p className="text-gray-500 text-sm">Kemarin pada 00:00-23.00</p>
           </div>
         </div>

@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import api from "../utils/api";
 const Navbar = () => {
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState("");
 
   useEffect(() => {
     const fetchStorePhoto = async () => {
@@ -9,7 +9,7 @@ const Navbar = () => {
         const token = localStorage.getItem("token");
         if (!token) throw new Error("Token tidak ditemukan");
 
-        const { data } = await api.get('/api/store/getstores', {
+        const { data } = await api.get("/api/store/getstores", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -18,7 +18,9 @@ const Navbar = () => {
         setImageUrl(`${backendUrl}${fotoseller.imageUrl}`);
       } catch (error) {
         console.error("Failed to fetch store photo:", error);
-        setImageUrl('/default-imageUrl.png'); // Fallback ke default image jika gagal
+        setImageUrl(
+          "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-vector-260nw-1706867365.jpg"
+        ); // Fallback ke default image jika gagal
       }
     };
 
@@ -31,13 +33,13 @@ const Navbar = () => {
       <div className="text-white font-bold text-lg flex items-center">
         KambingFresh <span className="text-sm text-gray-300 ml-1">Seller</span>
       </div>
-      
+
       {/* Search Bar */}
       <div className="flex-grow mx-8 relative">
-        <input 
-          type="text" 
-          placeholder="Pencarian" 
-          className="w-full px-4 py-2 rounded-md focus:outline-none" 
+        <input
+          type="text"
+          placeholder="Pencarian"
+          className="w-full px-4 py-2 rounded-md focus:outline-none"
         />
         <span className="absolute right-3 top-2.5 text-gray-500">
           🔍 {/* Ikon Pencarian */}
@@ -48,12 +50,16 @@ const Navbar = () => {
       <div className="flex items-center space-x-4">
         <button className="text-white">🔔</button>
         <div className="flex items-center text-white">
-          <img src={imageUrl || '/default-imageUrl.png'} alt="Profile" className="w-10 h-10 rounded-full mb-2" />
-          <span>Hijau Mandala</span>
+          <img
+            src={imageUrl || "/default-imageUrl.png"}
+            alt="Profile"
+            className="w-10 h-10 rounded-full mb-2"
+          />
+          <span>Giana</span>
         </div>
       </div>
     </nav>
   );
-}
+};
 
 export default Navbar;
